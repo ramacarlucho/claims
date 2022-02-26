@@ -45,7 +45,7 @@ def verify_address(address):
     return False
 
 
-@app.post('/getclaimable/', response_model=ClaimResponse)
+@app.post('/getclaimable', response_model=ClaimResponse)
 def get_claimable(address: Address):
     if not verify_address(address.address):
         return {'address': None, "claimable": None, 'error': 'Invalid Address'}
@@ -55,8 +55,10 @@ def get_claimable(address: Address):
         addr = eth_to_evmos(address.address)
  
     claimable = db.get_claimable(addr)
+    if claimable is None:
+        return {'address': addr, 'claimable': 0, 'error': "Not found"}
 
     return {'address': addr, 'claimable': claimable, 'error': ""}
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=6000, log_level='info')
+    uvicorn.run(app, host='127.0.0.1', port=9999, log_level='info')
