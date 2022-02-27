@@ -18,14 +18,14 @@ if __name__ == '__main__':
                 errored += 1
                 continue
             try:
-                balance = float(row[1])
+                balance = str(row[1])
                 valid = True
             except:
                 print ("cant convert", row)
                 errored += 1
                 continue
         
-            db.set_claimable(row[0], balance)
+            db.set_claimable(row[0], row[1])
             total += 1
         
         print("Finished loading db with ", total, " values")

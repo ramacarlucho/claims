@@ -31,7 +31,7 @@ class Address(BaseModel):
 
 class ClaimResponse(BaseModel):
     address: str
-    claimable: float
+    claimable: str
     error: str
 
 def verify_address(address):
@@ -56,8 +56,9 @@ def get_claimable(address: Address):
  
     claimable = db.get_claimable(addr)
     if claimable is None:
-        return {'address': addr, 'claimable': 0, 'error': "Not found"}
+        return {'address': addr, 'claimable': "0", 'error': "Not found"}
 
+    claimable = claimable.decode('utf-8')
     return {'address': addr, 'claimable': claimable, 'error': ""}
 
 if __name__ == '__main__':
